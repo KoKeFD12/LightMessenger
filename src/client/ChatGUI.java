@@ -1,13 +1,14 @@
-package Client;
+package client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatGUI extends JFrame{
-    public ChatGUI() {
+    public ChatGUI(String username) {
         setSize(400,600);
-        setTitle("LightMessenger");
-        setLayout(new BorderLayout());
+        setTitle("LightMessenger: "+username);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -19,7 +20,10 @@ public class ChatGUI extends JFrame{
         JPanel usersPanel = new JPanel();
         usersPanel.setBackground(Color.BLUE);
 
-        JList<String>
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel.addElement(username);
+        JList<String> userList = new JList<>(listModel);
+        usersPanel.add(userList);
 
         JPanel controlsPanel = new JPanel(new BorderLayout());
         controlsPanel.setBackground(Color.YELLOW);
