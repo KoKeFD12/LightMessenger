@@ -1,4 +1,8 @@
 package client;
+
+import client.GUI.ChatGUI;
+import client.GUI.LoginGUI;
+
 public class Client {
     public static void main(String[] args) {
 
