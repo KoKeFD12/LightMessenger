@@ -16,16 +16,11 @@ public class Server {
             Socket clientConnection = null;
             DataInputStream clientInput = null;
             DataOutputStream clientOutput = null;
-            ArrayList<String> messageList = new ArrayList<>();
+            ServerData serverData = new ServerData();
             while (true) {
                 try {
-                    clientConnection = serverSocket.accept();
-                    clientInput = new DataInputStream(clientConnection.getInputStream());
-                    clientOutput = new DataOutputStream(clientConnection.getOutputStream());
-                    while (true) {
-                        messageList.add(clientInput.readUTF());
-                        clientOutput.writeUTF(messageList.getLast());
-                    }
+                    ServerThread serverThread = new ServerThread(serverData, serverSocket.accept());
+                    serverThread.start();
                 } catch (IOException e) {
                     System.err.println("Client disconnected: " + e.getMessage());
                 }

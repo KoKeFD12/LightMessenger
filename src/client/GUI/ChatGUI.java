@@ -6,6 +6,10 @@ import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import util.Values;
 
 public class ChatGUI extends JFrame{
     public boolean isClosed = false;
@@ -34,6 +38,12 @@ public class ChatGUI extends JFrame{
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listModel.addElement(username);
+        try {
+            serverOutputStream.writeInt(Values.NEW_USER_CODE);
+            serverOutputStream.writeUTF(username);
+        } catch (IOException ex) {
+            System.err.println("Could add the user to the users list: "+ex.getMessage());
+        }
         JList<String> userList = new JList<>(listModel);
         userList.setFixedCellWidth(80);
         usersPanel.add(userList);
@@ -49,6 +59,7 @@ public class ChatGUI extends JFrame{
         controlsPanel.add(sendButton, BorderLayout.EAST);
         sendButton.addActionListener(e -> {
             try {
+                serverOutputStream.writeInt(Values.NEW_MESSAGE_CODE);
                 serverOutputStream.writeUTF(username+": "+textField.getText());
                 textField.setText("");
             } catch (IOException ex) {
@@ -68,7 +79,23 @@ public class ChatGUI extends JFrame{
         while (true) {
             if (isVisible()) {
                 try {
-                    textPane.setText(textPane.getText() + "\n" + serverInputStream.readUTF());
+                    switch (serverInputStream.readInt()) {
+                        case Values.USERS_LIST_UPDATE_CODE -> {
+                            String userListString = serverInputStream.readUTF();
+                            listModel.clear();
+                            listModel.addAll(new ArrayList<>(Arrays.asList(userListString.substring(1, userListString.length() - 1).split(", "))));
+                            userList.setModel(listModel);
+                        }
+                        case Values.MESSAGES_UPDATE_CODE -> {
+                            String messagesListString = serverInputStream.readUTF();
+                            ArrayList<String> messageList = new ArrayList<>(Arrays.asList(messagesListString.substring(1, messagesListString.length() - 1).split(", ")));
+                            String finalString = "";
+                            for (String str : messageList) {
+                                finalString+= str+"\n";
+                            }
+                            textPane.setText(finalString);
+                        }
+                    }
                 } catch (IOException e) {
                     System.err.println("A problem occurred while checking new messages: " + e.getMessage());
                 }
