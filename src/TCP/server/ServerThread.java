@@ -1,23 +1,23 @@
 package TCP.server;
 
+import TCP.util.Values;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import TCP.util.Values;
 
-public class ServerThread extends Thread{
-    private final Socket CLIENT;
+public class ServerThread extends Thread {
     private final ServerData serverData;
     private String username = "";
     private DataInputStream clientInput = null;
     private DataOutputStream clientOutput = null;
+
     public ServerThread(ServerData serverData, Socket client) {
         this.serverData = serverData;
-        this.CLIENT = client;
         try {
-            clientInput = new DataInputStream(CLIENT.getInputStream());
-            clientOutput = new DataOutputStream(CLIENT.getOutputStream());
+            clientInput = new DataInputStream(client.getInputStream());
+            clientOutput = new DataOutputStream(client.getOutputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -27,7 +27,7 @@ public class ServerThread extends Thread{
     public void run() {
         try {
             while (true) {
-                switch (clientInput.readInt()){
+                switch (clientInput.readInt()) {
                     case Values.NEW_USER_CODE -> {
                         username = clientInput.readUTF();
                         serverData.addToUsersList(username);
@@ -53,15 +53,16 @@ public class ServerThread extends Thread{
             clientOutput.writeInt(Values.MESSAGES_UPDATE_CODE);
             clientOutput.writeUTF(serverData.getMessages().toString());
         } catch (IOException e) {
-            System.err.println("Could not send the update messages: "+e.getMessage());
+            System.err.println("Could not send the update messages: " + e.getMessage());
         }
     }
+
     public void sendUpdateUsers() {
         try {
             clientOutput.writeInt(Values.USERS_LIST_UPDATE_CODE);
             clientOutput.writeUTF(serverData.getUsersList().toString());
         } catch (IOException e) {
-            System.err.println("Could not send the update users list: "+e.getMessage());
+            System.err.println("Could not send the update users list: " + e.getMessage());
         }
     }
 }

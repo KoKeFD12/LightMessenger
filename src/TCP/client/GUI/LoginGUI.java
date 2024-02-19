@@ -1,13 +1,17 @@
 package TCP.client.GUI;
 
-import javax.swing.*;
-import java.awt.*;
-
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import java.awt.GridLayout;
 public class LoginGUI {
     public static String username;
+
     public static int show() {
 
-        JPanel mainPanel = new JPanel(new GridLayout(2,1));
+        JPanel mainPanel = new JPanel(new GridLayout(2, 1));
         JLabel label = new JLabel("Type your username:");
         mainPanel.add(label);
         JTextField textField = new JTextField();
@@ -30,9 +34,9 @@ public class LoginGUI {
         }
     }
 
-    public static void alreadyExistsMessage(){
+    public static void alreadyExistsMessage() {
         JFrame frame = new JFrame("Login");
-        frame.setSize(200,100);
+        frame.setSize(200, 100);
         JPanel panel = new JPanel();
         JLabel label = new JLabel("User already exists.");
         panel.add(label);

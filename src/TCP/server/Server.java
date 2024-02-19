@@ -2,21 +2,14 @@ package TCP.server;
 
 import TCP.util.Values;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-    private static ArrayList<ServerThread> serverThreadArrayList = new ArrayList<>();
+    private static final ArrayList<ServerThread> serverThreadArrayList = new ArrayList<>();
     public static void main(String[] args) {
-        try {
-            ServerSocket serverSocket = new ServerSocket(Values.SERVER_PORT);
-            Socket clientConnection = null;
-            DataInputStream clientInput = null;
-            DataOutputStream clientOutput = null;
+        try (ServerSocket serverSocket = new ServerSocket(Values.SERVER_PORT);) {
             ServerData serverData = new ServerData();
             while (true) {
                 try {
@@ -31,14 +24,20 @@ public class Server {
             System.err.println("A problem with the connection occurred: " + e.getMessage());
         }
     }
+
+
+    /**
+     * Sends a call to all the clients to get and update the most recent users list.
+     */
     public static void updateMessages() {
-        for (ServerThread serverThread : serverThreadArrayList) {
-            serverThread.sendUpdateMessages();
-        }
+        serverThreadArrayList.forEach(ServerThread::sendUpdateMessages);
     }
+
+
+    /**
+     * Sends a call to all the clients to get and update the most recent messages.
+     */
     public static void updateUsersList() {
-        for (ServerThread serverThread : serverThreadArrayList) {
-            serverThread.sendUpdateUsers();
-        }
+        serverThreadArrayList.forEach(ServerThread::sendUpdateUsers);
     }
 }

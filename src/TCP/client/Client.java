@@ -22,7 +22,7 @@ public class Client {
                 serverOutputStream.writeInt(Values.CHECK_USERNAME_CODE);
                 serverOutputStream.writeUTF(LoginGUI.username);
                 if (!serverInputStream.readBoolean()) {
-                    ChatGUI chatGUI = new ChatGUI(LoginGUI.username, serverInputStream, serverOutputStream);
+                    new ChatGUI(LoginGUI.username, serverInputStream, serverOutputStream);
                 } else {
                     LoginGUI.alreadyExistsMessage();
                 }
@@ -30,9 +30,7 @@ public class Client {
         } catch (UnknownHostException e) {
             System.err.println("Could not find host IP.");
         } catch (IOException e) {
-            System.err.println("Could not connect to the TCP.server.");
+            System.err.println("Could not connect to the TCP server.");
         }
-
-
     }
 }

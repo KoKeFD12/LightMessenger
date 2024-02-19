@@ -9,7 +9,8 @@ import java.util.function.Predicate;
 @Getter
 @NoArgsConstructor
 public class ServerData {
-    private ArrayList<String> usersList = new ArrayList<>(), messages = new ArrayList<>();
+    private final ArrayList<String> usersList = new ArrayList<>();
+    private final ArrayList<String> messages = new ArrayList<>();
 
     public synchronized void addToUsersList(String username) {
         usersList.add(username);
