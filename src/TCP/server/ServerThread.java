@@ -1,10 +1,10 @@
-package server;
+package TCP.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import util.Values;
+import TCP.util.Values;
 
 public class ServerThread extends Thread{
     private final Socket CLIENT;
@@ -27,10 +27,6 @@ public class ServerThread extends Thread{
     public void run() {
         try {
             while (true) {
-                clientOutput.writeInt(Values.USERS_LIST_UPDATE_CODE);
-                clientOutput.writeUTF(serverData.getUsersList().toString());
-                clientOutput.writeInt(Values.MESSAGES_UPDATE_CODE);
-                clientOutput.writeUTF(serverData.getMessages().toString());
                 switch (clientInput.readInt()){
                     case Values.NEW_USER_CODE -> {
                         username = clientInput.readUTF();
@@ -40,6 +36,9 @@ public class ServerThread extends Thread{
                     case Values.NEW_MESSAGE_CODE -> {
                         serverData.addToMessages(clientInput.readUTF());
                         Server.updateMessages();
+                    }
+                    case Values.CHECK_USERNAME_CODE -> {
+                        clientOutput.writeBoolean(serverData.getUsersList().contains(clientInput.readUTF()));
                     }
                 }
             }

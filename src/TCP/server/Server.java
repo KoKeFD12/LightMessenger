@@ -1,6 +1,6 @@
-package server;
+package TCP.server;
 
-import util.Values;
+import TCP.util.Values;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

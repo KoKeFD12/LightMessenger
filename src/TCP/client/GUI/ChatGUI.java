@@ -1,4 +1,4 @@
-package client.GUI;
+package TCP.client.GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import util.Values;
+import TCP.util.Values;
 
 public class ChatGUI extends JFrame{
     public boolean isClosed = false;

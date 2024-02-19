@@ -1,8 +1,8 @@
-package client;
+package TCP.client;
 
-import client.GUI.ChatGUI;
-import client.GUI.LoginGUI;
-import util.Values;
+import TCP.client.GUI.ChatGUI;
+import TCP.client.GUI.LoginGUI;
+import TCP.util.Values;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,12 +19,18 @@ public class Client {
             if (LoginGUI.show() != 1) {
                 System.exit(0);
             } else {
-                ChatGUI chatGUI = new ChatGUI(LoginGUI.username, serverInputStream, serverOutputStream);
+                serverOutputStream.writeInt(Values.CHECK_USERNAME_CODE);
+                serverOutputStream.writeUTF(LoginGUI.username);
+                if (!serverInputStream.readBoolean()) {
+                    ChatGUI chatGUI = new ChatGUI(LoginGUI.username, serverInputStream, serverOutputStream);
+                } else {
+                    LoginGUI.alreadyExistsMessage();
+                }
             }
         } catch (UnknownHostException e) {
             System.err.println("Could not find host IP.");
         } catch (IOException e) {
-            System.err.println("Could not connect to the server.");
+            System.err.println("Could not connect to the TCP.server.");
         }
 
 

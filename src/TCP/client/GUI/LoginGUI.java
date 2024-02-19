@@ -1,4 +1,4 @@
-package client.GUI;
+package TCP.client.GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,5 +28,15 @@ public class LoginGUI {
         } else {
             return 0;
         }
+    }
+
+    public static void alreadyExistsMessage(){
+        JFrame frame = new JFrame("Login");
+        frame.setSize(200,100);
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("User already exists.");
+        panel.add(label);
+        frame.add(panel);
+        frame.setVisible(true);
     }
 }

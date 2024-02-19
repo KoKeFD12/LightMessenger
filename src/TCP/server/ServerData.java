@@ -1,4 +1,4 @@
-package server;
+package TCP.server;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +22,5 @@ public class ServerData {
     public synchronized void addToMessages(String message) {
         messages.add(message);
     }
+
 }
