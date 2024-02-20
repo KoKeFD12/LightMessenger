@@ -44,7 +44,6 @@ public class ChatGUI extends JFrame {
         chatPanel.add(textPane);
 
         JPanel usersPanel = new JPanel();
-        //usersPanel.setBackground(Color.BLUE);
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
         listModel.addElement(username);
